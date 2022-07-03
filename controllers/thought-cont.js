@@ -36,8 +36,13 @@ const thoughtContoller = {
 
     editThought(req, res) { 
         Thought.findOneAndUpdate({ 
-            _id: req.params.thoughtId }, req.body) 
-            .then((dbThoughtData) => { 
+            _id: req.params.thoughtId}, req.body,{
+            new: true,
+            runValidators: true,
+        })
+        .populate({ path: "reactions", select: "-__v" })
+        .select("-___v")
+        .then((dbThoughtData) => { 
                 res.json(dbThoughtData); 
             }
         ).catch((err) => { 
@@ -57,8 +62,9 @@ const thoughtContoller = {
     },
 
     addReaction(req, res) {
-        Thought.findOneAndUpdate({
-            _id:req.params.thoughtId }, req.body)
+        Thought.findOneAndUpdate(
+            {_id:req.params.thoughtId }, 
+            { $push: {reactions: req.body}})           
             .then((dbThoughtData) => {
                 res.json(dbThoughtData); 
             }
@@ -69,9 +75,11 @@ const thoughtContoller = {
     },
 
     removeReaction(req, res) {
-        Thought.findOneAndUpdate({
-            _id: req.params.thoughtId
-        }).then((dbThoughtData) => {
+        Thought.findOneAndUpdate(
+            {_id: req.params.thoughtId},
+            {$pull: {reactions: {reactionId: req.body}}},
+            {new: true}
+        ).then((dbThoughtData) => {
             res.json(dbThoughtData);
         }).catch((err) => {
             console.log(err);

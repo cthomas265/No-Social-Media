@@ -7,7 +7,7 @@ const {
     editUser,
     deleteUser,
     addFriend,
-    // removeFriend,
+    removeFriend,
 } = require('../../controllers/user-cont');
 
 // base url for this file at this spot is localhost:3001/api/users

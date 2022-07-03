@@ -69,8 +69,8 @@ const thoughtContoller = {
     },
 
     removeReaction(req, res) {
-        Thought.findOneAndDelete({
-            _id: req.params.userId
+        Thought.findOneAndUpdate({
+            _id: req.params.thoughtId
         }).then((dbThoughtData) => {
             res.json(dbThoughtData);
         }).catch((err) => {

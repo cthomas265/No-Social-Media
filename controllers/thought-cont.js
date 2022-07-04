@@ -1,4 +1,4 @@
-const { User, Thought } = require('../models');
+const { Thought, Reaction } = require('../models');
 const thoughtContoller = {
     getThoughts(req, res) {
         Thought.find() 
